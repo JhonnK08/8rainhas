@@ -13,15 +13,17 @@ public class Rainha {
     private int id;
     private int x;
     private int y;
-    private int ocupado = 0;
+    private int encontros;
+    private boolean ocupado = false;
+    
 
     public Rainha() {
     }
 
-    public Rainha(int x, int y, int ocupado) {
+    public Rainha(int x, int y, int encontros) {
         this.x = x;
         this.y = y;
-        this.ocupado = ocupado;
+        this.encontros = encontros;
     }
     
     public int getX() {
@@ -40,12 +42,12 @@ public class Rainha {
         this.y = y;
     }
 
-    public int getOcupado() {
-        return ocupado;
+    public int getEncontros() {
+        return encontros;
     }
 
-    public void setOcupado(int ocupado) {
-        this.ocupado = ocupado;
+    public void setEncontros(int encontros) {
+        this.encontros = encontros;
     }
 
     public int getId() {
@@ -55,6 +57,16 @@ public class Rainha {
     public void setId(int id) {
         this.id = id;
     }
+
+    public boolean isOcupado() {
+        return ocupado;
+    }
+
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
+    }
+    
+    
     
     
     
