@@ -60,7 +60,7 @@ public class Main {
     public static void verificaPosicoes(ArrayList<Rainha> rainhas, Tabuleiro tabuleiro) {
         Rainha[][] tabu = new Rainha[8][8];
         tabu = tabuleiro.getTabuleiro();
-        for (int i = 0; i < 8; i++) { //Loop de cada rainha
+            for (int i = 0; i < 8; i++) { //Loop de cada rainha
             Rainha rainha = rainhas.get(i);
             int aux = 0; //Auxiliar dos encontros
 
@@ -81,7 +81,7 @@ public class Main {
                 if (tabu[rainhas.get(i).getX()][j].getId() == rainhas.get(i).getId()) { //Verifica se a posição é a mesma da Rainha
 
                 } else {
-                    if (tabu[rainhas.get(i).getY()][j].isOcupado()) {
+                    if (tabu[rainhas.get(i).getX()][j].isOcupado()) {
                         rainhas.get(i).setEncontros(aux += 1); //Se foi encontrado uma Rainha na mesma posição, adiciona 1 aos encontros
                     }
                 }
@@ -193,8 +193,8 @@ public class Main {
                 }
             } else {
                 k = y;
-                for (int j = x; j >=0; j--) { //Diagonal inferior direita
-                    if (k < 8) {
+                for (int j = x; j < 8; j++) { //Diagonal inferior direita
+                    if (k >= 0) {
                         if (tabu[j][k].getId() == rainhas.get(i).getId()) { //Verifica se a posição é a mesma da Rainha
                             //Não faz nada
                         } else {
@@ -202,9 +202,10 @@ public class Main {
                                 rainhas.get(i).setEncontros(aux += 1); //Se foi encontrado uma Rainha na mesma posição, adiciona 1 aos encontros
                             }
                         }
-                        k++;
+                        k--;
                     }
                 }
+                System.out.println("Rainha " + rainhas.get(i).getId() + " - Coordenadas: (" + rainhas.get(i).getX() + "," + rainhas.get(i).getY() + ") possui " + rainhas.get(i).getEncontros() + " conflitos  na diagonal inferior direita.");
                 k = y;
                 for (int j = x; k < 8; k++) { //Diagonal superior esquerda
                     if (j >= 0) {
@@ -218,7 +219,7 @@ public class Main {
                     j--;
                     }
                 }
-
+                System.out.println("Rainha " + rainhas.get(i).getId() + " - Coordenadas: (" + rainhas.get(i).getX() + "," + rainhas.get(i).getY() + ") possui " + rainhas.get(i).getEncontros() + " conflitos  na diagonal superior esquerda.");
                 k = y;
                 for (int j = x; j < 8; j++) {  //Diagonal superior direita
                     if(k < 8) {
@@ -229,10 +230,10 @@ public class Main {
                             rainhas.get(i).setEncontros(aux += 1); //Se foi encontrado uma Rainha na mesma posição, adiciona 1 aos encontros
                         }
                     }
-                    }
                     k++;
+                    }
                 }
-
+                System.out.println("Rainha " + rainhas.get(i).getId() + " - Coordenadas: (" + rainhas.get(i).getX() + "," + rainhas.get(i).getY() + ") possui " + rainhas.get(i).getEncontros() + " conflitos  na diagonal superior direita.");
                 k = y;
                 for (int j = x; j >= 0; j--) { //Diagonal inferior esquerda
                     if (k >= 0) {
@@ -246,6 +247,7 @@ public class Main {
                     k--;
                     }
                 }
+                System.out.println("Rainha " + rainhas.get(i).getId() + " - Coordenadas: (" + rainhas.get(i).getX() + "," + rainhas.get(i).getY() + ") possui " + rainhas.get(i).getEncontros() + " conflitos  na diagonal inferior esquerda.");
 
             }
             
@@ -254,4 +256,8 @@ public class Main {
         
         tabuleiro.setTabuleiro(tabu);
     }
+    
+    
+    //realizar fitness
+    //
 }
