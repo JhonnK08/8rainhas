@@ -5,6 +5,12 @@
  */
 package AG;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,29 +23,39 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         final Tabuleiro tabuleiro = new Tabuleiro();
         final Rainha[][] rainhas = new Rainha[8][8];
-        final ArrayList<Rainha> arrayRainhas = new ArrayList(8);
+        final int tamanhopopulacao = 8; // Número de indivíduos
+        final int numerogeracoes = 1;
+        final ArrayList<Rainha> arrayRainhas = new ArrayList(tamanhopopulacao); //ArrayList de Rainhas
         tabuleiro.setTabuleiro(rainhas); // Criação da Matriz Tabuleiro
-        Random aleatorio = new Random();
+        
+        geraPopulacao(tamanhopopulacao, arrayRainhas);
+        
+        populaTabuleiro(arrayRainhas, tabuleiro);
 
-        for (int i = 0; i < 8; i++) {
+        verificaPosicoes(arrayRainhas, tabuleiro, tamanhopopulacao);
+        
+        calculaFitness(arrayRainhas);
+
+        selecionaRanking(arrayRainhas);
+        
+    }
+
+    public static void geraPopulacao(int populacao, ArrayList<Rainha> rainhas) {
+        Random aleatorio = new Random();
+        for (int i = 0; i < populacao; i++) {
             Rainha rainha = new Rainha();
             rainha.setId(i);
             rainha.setX(aleatorio.nextInt(8));
             rainha.setY(aleatorio.nextInt(8));
             rainha.setOcupado(true);
-            arrayRainhas.add(i, rainha);
-            System.out.println("Rainha " + arrayRainhas.get(i).getId() + " - Coordenadas: (" + arrayRainhas.get(i).getX() + "," + arrayRainhas.get(i).getY() + ")");
+            rainhas.add(i, rainha);
+            System.out.println("Rainha " + rainhas.get(i).getId() + " - Coordenadas: (" + rainhas.get(i).getX() + "," + rainhas.get(i).getY() + ")");
         }
-
-        populaTabuleiro(arrayRainhas, tabuleiro);
-
-        verificaPosicoes(arrayRainhas, tabuleiro);
-
     }
-
+    
     public static void populaTabuleiro(ArrayList<Rainha> rainhas, Tabuleiro tabuleiro) {
         Rainha tabu2[][] = new Rainha[8][8]; //Tabuleiro de Rainhas
         Rainha rainhaNula = new Rainha();
@@ -57,10 +73,10 @@ public class Main {
         System.out.println("Tabuleiro populado!");
     }
 
-    public static void verificaPosicoes(ArrayList<Rainha> rainhas, Tabuleiro tabuleiro) {
+    public static void verificaPosicoes(ArrayList<Rainha> rainhas, Tabuleiro tabuleiro, int populacao) {
         Rainha[][] tabu = new Rainha[8][8];
         tabu = tabuleiro.getTabuleiro();
-            for (int i = 0; i < 8; i++) { //Loop de cada rainha
+            for (int i = 0; i < populacao; i++) { //Loop de cada rainha
             Rainha rainha = rainhas.get(i);
             int aux = 0; //Auxiliar dos encontros
 
@@ -256,8 +272,61 @@ public class Main {
         
         tabuleiro.setTabuleiro(tabu);
     }
-    
+        
     
     //realizar fitness
-    //
+    public static void calculaFitness(ArrayList<Rainha> Rainhas) {
+        for (int i = 0; i < Rainhas.size(); i++) {
+            Rainhas.get(i).setFitness((double)Rainhas.get(i).getEncontros()/Rainhas.size());
+            System.out.println("Rainha " + Rainhas.get(i).getId() + " - Encontros: " + Rainhas.get(i).getEncontros() + " Fitness: " + Rainhas.get(i).getFitness());
+        }    
+    }
+
+    //realiza a seleção por Ranking
+    public static void selecionaRanking(ArrayList<Rainha> Rainhas) {
+        Rainha melhorRainha = new Rainha();
+        melhorRainha = Rainhas.get(0);
+        for (int i = 0; i < 10; i++) {
+            if (melhorRainha.getFitness() > Rainhas.get(i).getFitness()) {
+                melhorRainha = Rainhas.get(i);
+            }
+        }
+    }
+    
+    public static void selecionaRoleta(ArrayList<Rainha> Rainhas) {
+        int somaEncontros = 0;
+        for (int i = 0; i < Rainhas.size(); i++) {
+            somaEncontros += Rainhas.get(i).getEncontros();
+        }
+        
+    }
+    
+    
+    
+    
+    public static void criaArquivo() {
+            try {
+
+            String content = "This is the content to write into file";
+
+            File file = new File("arquivo.txt");
+
+            // if file doesnt exists, then create it
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+
+            System.out.println("Done");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+    }
+
 }

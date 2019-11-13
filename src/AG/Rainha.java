@@ -15,15 +15,18 @@ public class Rainha {
     private int y;
     private int encontros;
     private boolean ocupado = false;
+    private double fitness;
     
 
     public Rainha() {
     }
 
-    public Rainha(int x, int y, int encontros) {
+    public Rainha(int id, int x, int y, int encontros, double fitness) {
+        this.id = id;
         this.x = x;
         this.y = y;
         this.encontros = encontros;
+        this.fitness = fitness;
     }
     
     public int getX() {
@@ -65,6 +68,16 @@ public class Rainha {
     public void setOcupado(boolean ocupado) {
         this.ocupado = ocupado;
     }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
+    }
+    
+    
     
     
     
