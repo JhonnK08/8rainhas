@@ -45,12 +45,16 @@ public class Main {
 // Criação de arquivo de log
         
         Date data = new Date(System.currentTimeMillis());
-            SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
-            formatador.format(data);
-            File arquivo;
+        SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dataFormat = formatador.format(data);
+        dataFormat = dataFormat.replace(" ", "");
+        dataFormat = dataFormat.replace("-", "");
+        dataFormat = dataFormat.replace(":", "");
+        System.out.println(dataFormat);
+        File arquivo;
         
         try {
-            arquivo = new File("log-" + formatador.format(data) + ".txt");
+            arquivo = new File("log-" + dataFormat + ".txt");
             //arquivo = new File("log.txt");              
             //System.setOut(new PrintStream(arquivo));
             arquivo.createNewFile();
