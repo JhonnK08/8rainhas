@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,12 +34,11 @@ public class Main {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Tabuleiro tabuleiro = new Tabuleiro();
-        Rainha[][] rainhas = new Rainha[8][8];
+        Rainha[][] rainhas = new Rainha[8][8]; //Matriz Tabuleiro
         int tamanhopopulacao = 8; // Número de indivíduos
-        int numerogeracoes = 1;
-        float taxaCruzamento = (float) 0.5;
+        int numerogeracoes = 1; //Número de gerações
+        float taxaCruzamento = (float) 0.5; //Taxa de cruzamento
         ArrayList<Rainha> arrayRainhas = new ArrayList(tamanhopopulacao); //ArrayList de Rainhas
-        Rainha melhorRainha = new Rainha();
         tabuleiro.setTabuleiro(rainhas); // Criação da Matriz Tabuleiro
         
 
@@ -52,7 +52,6 @@ public class Main {
         dataFormat = dataFormat.replace(":", "");
         System.out.println(dataFormat);
         File arquivo;
-        
         try {
             arquivo = new File("log-" + dataFormat + ".txt");
             //arquivo = new File("log.txt");              
@@ -67,8 +66,6 @@ public class Main {
         
         
         
-        
-        
         geraPopulacao(tamanhopopulacao, arrayRainhas);
         
         populaTabuleiro(arrayRainhas, tabuleiro);
@@ -76,10 +73,14 @@ public class Main {
         verificaPosicoes(arrayRainhas, tabuleiro, tamanhopopulacao);
         
         calculaFitness(arrayRainhas);
-  
-        //selecionaRanking(arrayRainhas);
         
-        //selecionaRoleta(arrayRainhas);
+        String opcao = JOptionPane.showInputDialog("Informe o tipo de seleção:\n1 - Seleção Ranking\n2 - Seleção Roleta");
+        
+        switch (opcao) {
+            case "1" : selecionaRanking(arrayRainhas);break;
+            case "2" : selecionaRoleta(arrayRainhas);break; 
+            default : System.out.println("Nenhuma opção selecionada");;break;
+        }
         
         //crossoverUmPonto(arrayRainhas, taxaCruzamento);
         
